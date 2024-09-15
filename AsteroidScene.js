@@ -75,7 +75,7 @@ class AsteroidScene extends Phaser.Scene {
     this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     // Initialize boss health
-    this.bossHealth = 3;
+    this.bossHealth = 12;
 
     // Add collision between lasers and boss
     this.physics.add.collider(this.lasers, this.boss, this.hitBoss, null, this);
@@ -117,7 +117,7 @@ class AsteroidScene extends Phaser.Scene {
     }
 
     // Check for collisions between lasers and boss
-    this.physics.collide(this.lasers, this.boss, this.hitBoss, null, this);
+    this.physics.world.collide(this.lasers, this.boss, this.hitBoss, null, this);
 
     // Remove lasers that are out of bounds
     this.lasers.children.entries.forEach((laser) => {
@@ -143,9 +143,9 @@ class AsteroidScene extends Phaser.Scene {
     }
 
     // Check if boss exists and recreate if necessary
-    if (!this.boss || !this.boss.body) {
+    if (this.bossHealth > 0 && (!this.boss || !this.boss.body)) {
       console.log('Recreating boss');
-      this.boss = this.physics.add.image(100, 300, 'boss');
+      this.boss = this.physics.add.image(this.boss.x, this.boss.y, 'boss');
       this.boss.setDisplaySize(150, 150);
       this.boss.setCollideWorldBounds(true);
       this.boss.setImmovable(true);
@@ -173,7 +173,12 @@ class AsteroidScene extends Phaser.Scene {
   hitBoss(laser, boss) {
     console.log('Hit boss function called');
     console.log('Current boss health:', this.bossHealth);
-    laser.destroy();
+    
+    // Ensure the laser is destroyed
+    if (laser && laser.active) {
+      laser.destroy();
+    }
+    
     this.bossHealth--;
   
     console.log('Boss health after hit:', this.bossHealth);
@@ -187,7 +192,7 @@ class AsteroidScene extends Phaser.Scene {
       repeat: 1,
       onComplete: () => {
         console.log('Tween completed, setting alpha back to 1');
-        boss.setAlpha(1); // Ensure boss is fully visible after hit effect
+        boss.setAlpha(1);
       }
     });
   
@@ -199,6 +204,7 @@ class AsteroidScene extends Phaser.Scene {
       this.bossTween.stop();
       boss.destroy();
       this.bossHealthText.destroy();
+      this.boss = null; // Set boss to null to indicate it's defeated
       this.add.text(512, 300, 'Boss Defeated!', {
         fontSize: '48px',
         color: '#ffffff',
@@ -207,7 +213,6 @@ class AsteroidScene extends Phaser.Scene {
       }).setOrigin(0.5);
     } else {
       console.log('Boss still alive, current health:', this.bossHealth);
-      // Ensure boss is still active and visible
       boss.setActive(true).setVisible(true);
     }
   }

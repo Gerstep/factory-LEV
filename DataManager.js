@@ -18,7 +18,7 @@ class DataManager extends Phaser.Scene {
   }
 
   create() {
-    this.registry.set('score', 10);
+    this.registry.set('score', 0);
     this.registry.set('ships', ['default']);
     this.registry.set('currentShip', 'ship');
     this.scene.start('MainScene');

@@ -17,13 +17,13 @@ class MainScene extends Phaser.Scene {
       }).setOrigin(1, 0);
 
       this.add.text(90, 50, 'LEV GAME', { fontSize: '24px', color: '#ffffff' }).setOrigin(0.5);
-      this.add.text(500, 800, 'Go to the planet!', {
-              fontSize: '32px',
-              color: '#ffffff',
-              backgroundColor: '#000000',
-              padding: { x: 3, y: 3 },
-              stroke: '#ffffff',
-              strokeThickness: 2 
+      this.add.text(512, 50, 'Explore Planet, Shop and Asteroid', {
+        fontSize: '32px',
+        color: '#ffffff',
+        backgroundColor: '#000000',
+        padding: { x: 10, y: 5 },
+        stroke: '#ffffff',
+        strokeThickness: 2 
       }).setOrigin(0.5);
 
       this.ship = this.add.image(512, 450, this.registry.get('currentShip'));

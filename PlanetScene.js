@@ -25,6 +25,15 @@ class PlanetScene extends Phaser.Scene {
           strokeThickness: 2
       }).setOrigin(0.5).setInteractive();
 
+      this.add.text(512, 50, 'Collect treasure chests', {
+        fontSize: '32px',
+        color: '#ffffff',
+        backgroundColor: '#000000',
+        padding: { x: 10, y: 5 },
+        stroke: '#ffffff',
+        strokeThickness: 2 
+      }).setOrigin(0.5);
+
       backButton.on('pointerover', () => {
           backButton.setStyle({ backgroundColor: '#333333' });
       });
