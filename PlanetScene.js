@@ -16,15 +16,6 @@ class PlanetScene extends Phaser.Scene {
       }).setOrigin(1, 0);
       background.setDisplaySize(1024, 900);
   
-      this.add.text(512, 50, 'Welcome to the planet!', {
-          fontSize: '32px',
-          color: '#ffffff',
-          backgroundColor: '#000000',
-          padding: { x: 10, y: 5 },
-          stroke: '#ffffff',
-          strokeThickness: 2 
-      }).setOrigin(0.5);
-  
       const backButton = this.add.text(100, 50, 'Back to Space', {
           fontSize: '24px',
           color: '#ffffff',
@@ -33,6 +24,18 @@ class PlanetScene extends Phaser.Scene {
           stroke: '#ffffff',
           strokeThickness: 2
       }).setOrigin(0.5).setInteractive();
+
+      backButton.on('pointerover', () => {
+          backButton.setStyle({ backgroundColor: '#333333' });
+      });
+
+      backButton.on('pointerout', () => {
+          backButton.setStyle({ backgroundColor: '#000000' });
+      });
+
+      backButton.on('pointerdown', () => {
+          backButton.setStyle({ backgroundColor: '#555555' });
+      });
   
       backButton.on('pointerup', () => {
           this.scene.start('MainScene');

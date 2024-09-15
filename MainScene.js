@@ -37,8 +37,8 @@ class MainScene extends Phaser.Scene {
       this.scale.on('resize', this.resize, this);
 
       this.music = this.sound.add('background_music', { loop: true });
-this.music.play();
-this.createMuteButton();
+      this.music.play();
+      this.createMuteButton();
   }
 
   resize(gameSize) {
@@ -50,11 +50,11 @@ this.createMuteButton();
     // Adjust positions of UI elements if needed
     // For example:
     this.scoreText.setPosition(width - 20, 20);
-    this.muteButton.setPosition(width - 16, 16);
+    this.muteButton.setPosition(width - 86, height - 36);
 }
 
 createMuteButton() {
-  this.muteButton = this.add.text(this.cameras.main.width - 16, 16, '🔊', {
+  this.muteButton = this.add.text(this.cameras.main.width - 26, this.cameras.main.height - 36, '🔊', {
       fontSize: '32px',
       color: '#ffffff'
   }).setOrigin(1, 0).setInteractive();

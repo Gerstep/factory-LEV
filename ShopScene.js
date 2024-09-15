@@ -34,6 +34,18 @@ class ShopScene extends Phaser.Scene {
         strokeThickness: 2
     }).setOrigin(0.5).setInteractive();
 
+    backButton.on('pointerover', () => {
+        backButton.setStyle({ backgroundColor: '#333333' });
+    });
+
+    backButton.on('pointerout', () => {
+        backButton.setStyle({ backgroundColor: '#000000' });
+    });
+
+    backButton.on('pointerdown', () => {
+        backButton.setStyle({ backgroundColor: '#555555' });
+    });
+  
     backButton.on('pointerup', () => {
         this.scene.start('MainScene');
     });
