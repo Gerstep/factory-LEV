@@ -45,6 +45,8 @@ class AsteroidScene extends Phaser.Scene {
     this.boss = this.physics.add.image(100, 300, 'boss');
     this.boss.setDisplaySize(150, 150);
     this.boss.setCollideWorldBounds(true);
+    this.boss.setImmovable(true);
+    this.boss.body.enable = true;
 
     // Create a tween for boss movement
     this.bossTween = this.tweens.add({
@@ -55,6 +57,8 @@ class AsteroidScene extends Phaser.Scene {
       yoyo: true,
       repeat: -1
     });
+
+    this.boss.setData('health', this.bossHealth);
 
     // Add the ship
     this.ship = this.physics.add.image(512, 450, this.registry.get('currentShip'));
@@ -112,6 +116,9 @@ class AsteroidScene extends Phaser.Scene {
       this.lastFired = time + this.fireRate;
     }
 
+    // Check for collisions between lasers and boss
+    this.physics.collide(this.lasers, this.boss, this.hitBoss, null, this);
+
     // Remove lasers that are out of bounds
     this.lasers.children.entries.forEach((laser) => {
       if (laser.y < 0) {
@@ -124,6 +131,37 @@ class AsteroidScene extends Phaser.Scene {
       this.bossHealthText.setPosition(this.boss.x, this.boss.y - 100);
       this.bossHealthText.setText('Boss Health: ' + this.bossHealth);
     }
+
+    // Check boss physics body
+    if (this.boss && this.boss.body) {
+      if (!this.boss.body.enable) {
+        console.log('Boss physics body disabled, re-enabling');
+        this.boss.body.enable = true;
+      }
+    } else {
+      console.log('Boss or boss body not found');
+    }
+
+    // Check if boss exists and recreate if necessary
+    if (!this.boss || !this.boss.body) {
+      console.log('Recreating boss');
+      this.boss = this.physics.add.image(100, 300, 'boss');
+      this.boss.setDisplaySize(150, 150);
+      this.boss.setCollideWorldBounds(true);
+      this.boss.setImmovable(true);
+      this.boss.body.enable = true;
+      this.physics.add.collider(this.lasers, this.boss, this.hitBoss, null, this);
+      
+      // Recreate the boss movement tween
+      this.bossTween = this.tweens.add({
+        targets: this.boss,
+        x: 924,
+        duration: 4000,
+        ease: 'Linear',
+        yoyo: true,
+        repeat: -1
+      });
+    }
   }
 
   shootLaser() {
@@ -133,22 +171,31 @@ class AsteroidScene extends Phaser.Scene {
   }
 
   hitBoss(laser, boss) {
+    console.log('Hit boss function called');
+    console.log('Current boss health:', this.bossHealth);
     laser.destroy();
     this.bossHealth--;
-
+  
+    console.log('Boss health after hit:', this.bossHealth);
+  
     // Visual feedback for hit
     this.tweens.add({
       targets: boss,
       alpha: 0.5,
       duration: 50,
       yoyo: true,
-      repeat: 3,
+      repeat: 1,
       onComplete: () => {
+        console.log('Tween completed, setting alpha back to 1');
         boss.setAlpha(1); // Ensure boss is fully visible after hit effect
       }
     });
-
+  
+    // Update boss health text
+    this.bossHealthText.setText('Boss Health: ' + this.bossHealth);
+  
     if (this.bossHealth <= 0) {
+      console.log('Boss health reached 0, destroying boss');
       this.bossTween.stop();
       boss.destroy();
       this.bossHealthText.destroy();
@@ -158,6 +205,10 @@ class AsteroidScene extends Phaser.Scene {
         backgroundColor: '#000000',
         padding: { x: 10, y: 5 },
       }).setOrigin(0.5);
+    } else {
+      console.log('Boss still alive, current health:', this.bossHealth);
+      // Ensure boss is still active and visible
+      boss.setActive(true).setVisible(true);
     }
   }
 }
