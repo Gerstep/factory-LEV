@@ -34,6 +34,7 @@ class MainScene extends Phaser.Scene {
       this.createLandButton();
       this.createShopButton();
       this.createFullscreenButton();
+      this.createAsteroidButton();
       this.scale.on('resize', this.resize, this);
 
       this.music = this.sound.add('background_music', { loop: true });
@@ -83,6 +84,50 @@ createMuteButton() {
             this.scale.startFullscreen();
         }
     });
+}
+
+createAsteroidButton() {
+  this.asteroidButton = this.add.text(100, 800, 'Land on Asteroid', {
+      fontSize: '24px',
+      color: '#ffffff',
+      backgroundColor: '#000000',
+      padding: { x: 10, y: 5 },
+      stroke: '#ffffff',
+      strokeThickness: 2
+  }).setOrigin(0, 0.5).setInteractive();
+
+  this.asteroidButton.on('pointerover', () => {
+      this.asteroidButton.setStyle({ backgroundColor: '#333333' });
+  });
+
+  this.asteroidButton.on('pointerout', () => {
+      this.asteroidButton.setStyle({ backgroundColor: '#000000' });
+  });
+
+  this.asteroidButton.on('pointerdown', () => {
+      this.asteroidButton.setStyle({ backgroundColor: '#555555' });
+  });
+
+  this.asteroidButton.on('pointerup', () => {
+      this.asteroidButton.setStyle({ backgroundColor: '#333333' });
+      this.landOnAsteroid();
+  });
+
+  this.asteroidButton.setVisible(false);
+}
+
+landOnAsteroid() {
+  const currentShip = this.registry.get('currentShip');
+  if (currentShip === 'ship') {
+      this.add.text(512, 450, 'You need a better ship!', {
+          fontSize: '32px',
+          color: '#ff0000',
+          backgroundColor: '#000000',
+          padding: { x: 10, y: 5 },
+      }).setOrigin(0.5);
+  } else if (currentShip === 'ship2') {
+      this.scene.start('AsteroidScene');
+  }
 }
 
   createLandButton() {
@@ -165,9 +210,15 @@ createMuteButton() {
       }
 
       if (this.ship.x > 724 && this.ship.y > 350 && this.ship.y < 550) {
-        this.shopButton.setVisible(true);
-    } else {
+          this.shopButton.setVisible(true);
+      } else {
           this.shopButton.setVisible(false);
+      }
+
+      if (this.ship.x < 300 && this.ship.y > 600) {
+          this.asteroidButton.setVisible(true);
+      } else {
+          this.asteroidButton.setVisible(false);
       }
 
       this.ship.x = Phaser.Math.Clamp(this.ship.x, 100, 924);

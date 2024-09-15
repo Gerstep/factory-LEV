@@ -2,6 +2,7 @@ import DataManager from './DataManager.js';
 import MainScene from './MainScene.js';
 import PlanetScene from './PlanetScene.js';
 import ShopScene from './ShopScene.js';
+import AsteroidScene from './AsteroidScene.js';
 
 const config = {
     type: Phaser.AUTO,
@@ -19,7 +20,7 @@ const config = {
             debug: false
         }
     },
-    scene: [DataManager, MainScene, PlanetScene, ShopScene]
+    scene: [DataManager, MainScene, PlanetScene, ShopScene, AsteroidScene]
 };
 
 const game = new Phaser.Game(config);

@@ -6,7 +6,7 @@ class PlanetScene extends Phaser.Scene {
   create() {
       const background = this.add.image(512, 450, 'planet1');
       this.score = 0;
-      this.scoreText = this.add.text(1000, 20, 'Score: ' + this.registry.get('score'), {
+      this.scoreText = this.add.text(1000, 20, 'Money: ' + this.registry.get('score') + '$' , {
           fontSize: '24px',
           color: '#ffffff',
           backgroundColor: '#000000',
@@ -43,7 +43,7 @@ class PlanetScene extends Phaser.Scene {
   
       // Add the character
       this.character = this.physics.add.sprite(512, 450, 'char');
-      this.character.setDisplaySize(100, 100);
+      this.character.setDisplaySize(150, 150);
   
       // Add 11 randomly positioned treasure chests
       this.chests = this.physics.add.staticGroup();

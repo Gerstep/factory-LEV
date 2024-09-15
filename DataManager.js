@@ -11,11 +11,14 @@ class DataManager extends Phaser.Scene {
       this.load.image('chest', 'chest.png');
       this.load.image('char', 'char.png');
       this.load.image('shop', 'shop.png');
+      this.load.image('boss', 'boss.png');
       this.load.audio('background_music', 'music.mp3');
+      this.load.image('asteroid', 'asteroid.png');
+      this.load.image('laser', 'laser.png');
   }
 
   create() {
-    this.registry.set('score', 0);
+    this.registry.set('score', 10);
     this.registry.set('ships', ['default']);
     this.registry.set('currentShip', 'ship');
     this.scene.start('MainScene');
